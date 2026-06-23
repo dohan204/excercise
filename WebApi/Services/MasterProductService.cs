@@ -45,6 +45,11 @@ public class MasterProductService
             {
                 throw new ArgumentNullException("Input khong được để trống");
             }
+            if(await ProductExits(masterProduct.ProductCode))
+            {
+                throw new InvalidOperationException("Sản phẩm đã tồn tại");
+            }
+
                 await 
                 connection.ExecuteAsync
                     ("spCreateMasterProduct", new
@@ -68,6 +73,7 @@ public class MasterProductService
             {
                 throw new ArgumentNullException("Sản phẩm không tồn tại");
             }
+
             await connection.ExecuteAsync("spUpdateMasterProduct", new
             {
                 ProductId = Id,
@@ -125,5 +131,14 @@ public class MasterProductService
         }
 
         return true;
+    }
+
+
+    private async Task<bool> ProductExits(string productCode)
+    {
+        using(var connection = sqlConnection.CreateConnection())
+        {
+            return await connection.QueryFirstAsync<int>($"if exists (select top(1)Id from dbo.MasterProduct where ProductCode = @Id) select 1 else select 0", new {Id = productCode}) > 0;
+        }
     }
 }
