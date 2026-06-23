@@ -1,4 +1,5 @@
 export interface MasterProduct {
+    id: string,
     productCode: string,
     productName: string,
     unit: string,

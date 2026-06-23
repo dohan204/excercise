@@ -1,6 +1,7 @@
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { Button, Dialog, DialogActions, DialogContent } from '@mui/material';
 import React from 'react'
+import { useSubmitFormData } from '../../services/ProductDataService';
 
 
 export type Inputs = {
@@ -15,21 +16,30 @@ export type Inputs = {
 
 export interface NewProps {
     open: boolean,
-    setOpen: (open: boolean) => void
+    setOpen: (open: boolean) => void,
+    setCount: (value: number | ((prev: number) => number)) => void;
 }
 
 const ProductNewPupup = (props: NewProps) => {
-    const { open, setOpen } = props;
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
-    const onSubmit: SubmitHandler<Inputs> = (payload) => {
-        console.log(payload);
+    const { open, setOpen, setCount } = props;
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<Inputs>();
+    const {loading, submit, messageErr} = useSubmitFormData();
+
+    const onSubmit: SubmitHandler<Inputs> = async (payload) => {
+        try {
+        await submit(payload);
+        setOpen(false);
+        setCount(c => c + 1);
+        reset()
+    } catch(err) {
+        console.log(err);
+        
+    }
     }
     return (
         <React.Fragment>
-            <Button variant='outlined' onClick={() => setOpen(true)}>
-                Thêm mới
-            </Button>
             <Dialog open={open} onClose={() => setOpen(false)}>
+                {messageErr && <span className='text-red-600 text-center'>{messageErr}</span>}
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <DialogContent>
                         <div
@@ -112,7 +122,11 @@ const ProductNewPupup = (props: NewProps) => {
                         <Button onClick={() => setOpen(false)}>
                             Hủy
                         </Button>
-                        <Button type='submit' variant='contained' className=''>
+                        <Button 
+                            type='submit' 
+                            variant='contained'
+                            disabled={loading}
+                            >
                             Lưu
                         </Button>
                     </DialogActions>

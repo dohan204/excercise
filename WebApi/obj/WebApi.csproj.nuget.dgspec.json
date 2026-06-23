@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Excercise\\WebApi\\WebApi.csproj": {}
+    "D:\\Excercise\\webapi\\WebApi.csproj": {}
   },
   "projects": {
-    "D:\\Excercise\\WebApi\\WebApi.csproj": {
+    "D:\\Excercise\\webapi\\WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Excercise\\WebApi\\WebApi.csproj",
+        "projectUniqueName": "D:\\Excercise\\webapi\\WebApi.csproj",
         "projectName": "WebApi",
-        "projectPath": "D:\\Excercise\\WebApi\\WebApi.csproj",
+        "projectPath": "D:\\Excercise\\webapi\\WebApi.csproj",
         "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-        "outputPath": "D:\\Excercise\\WebApi\\obj\\",
+        "outputPath": "D:\\Excercise\\webapi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
