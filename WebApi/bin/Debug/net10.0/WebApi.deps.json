@@ -14,7 +14,8 @@
           "Microsoft.EntityFrameworkCore.Design": "10.0.9",
           "Microsoft.EntityFrameworkCore.SqlServer": "10.0.9",
           "QRCoder": "1.8.0",
-          "QuestPDF": "2026.6.0"
+          "QuestPDF": "2026.6.0",
+          "Z.Dapper.Plus": "9.3.2"
         },
         "runtime": {
           "WebApi.dll": {}
@@ -399,7 +400,7 @@
           "Microsoft.IdentityModel.JsonWebTokens": "7.7.1",
           "Microsoft.IdentityModel.Protocols.OpenIdConnect": "7.7.1",
           "Microsoft.SqlServer.Server": "1.0.0",
-          "System.Configuration.ConfigurationManager": "9.0.4",
+          "System.Configuration.ConfigurationManager": "10.0.0",
           "System.Security.Cryptography.Pkcs": "10.0.7"
         },
         "runtime": {
@@ -566,7 +567,7 @@
       "Microsoft.Identity.Client.Extensions.Msal/4.73.1": {
         "dependencies": {
           "Microsoft.Identity.Client": "4.73.1",
-          "System.Security.Cryptography.ProtectedData": "9.0.4"
+          "System.Security.Cryptography.ProtectedData": "10.0.0"
         },
         "runtime": {
           "lib/net8.0/Microsoft.Identity.Client.Extensions.Msal.dll": {
@@ -886,14 +887,14 @@
           }
         }
       },
-      "System.Configuration.ConfigurationManager/9.0.4": {
+      "System.Configuration.ConfigurationManager/10.0.0": {
         "dependencies": {
-          "System.Security.Cryptography.ProtectedData": "9.0.4"
+          "System.Security.Cryptography.ProtectedData": "10.0.0"
         },
         "runtime": {
-          "lib/net9.0/System.Configuration.ConfigurationManager.dll": {
-            "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.0.425.16305"
+          "lib/net10.0/System.Configuration.ConfigurationManager.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.52411"
           }
         }
       },
@@ -958,11 +959,22 @@
           }
         }
       },
-      "System.Security.Cryptography.ProtectedData/9.0.4": {
+      "System.Security.Cryptography.ProtectedData/10.0.0": {
         "runtime": {
-          "lib/net9.0/System.Security.Cryptography.ProtectedData.dll": {
-            "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.0.425.16305"
+          "lib/net10.0/System.Security.Cryptography.ProtectedData.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.52411"
+          }
+        }
+      },
+      "Z.Dapper.Plus/9.3.2": {
+        "dependencies": {
+          "System.Configuration.ConfigurationManager": "10.0.0"
+        },
+        "runtime": {
+          "lib/net10.0/Z.Dapper.Plus.dll": {
+            "assemblyVersion": "9.3.2.0",
+            "fileVersion": "9.3.2.0"
           }
         }
       }
@@ -1310,12 +1322,12 @@
       "path": "system.composition.typedparts/9.0.0",
       "hashPath": "system.composition.typedparts.9.0.0.nupkg.sha512"
     },
-    "System.Configuration.ConfigurationManager/9.0.4": {
+    "System.Configuration.ConfigurationManager/10.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-dvjqKp+2LpGid6phzrdrS/2mmEPxFl3jE1+L7614q4ZChKbLJCpHXg6sBILlCCED1t//EE+un/UdAetzIMpqnw==",
-      "path": "system.configuration.configurationmanager/9.0.4",
-      "hashPath": "system.configuration.configurationmanager.9.0.4.nupkg.sha512"
+      "sha512": "sha512-0B+BzJ6pPMrRzJrVsttKf9MfDj6Syw9xoY+agcS9VssYQali1446+jTf5v1K94AMFUBxLXqDZlaTjO5edaI3jA==",
+      "path": "system.configuration.configurationmanager/10.0.0",
+      "hashPath": "system.configuration.configurationmanager.10.0.0.nupkg.sha512"
     },
     "System.Drawing.Common/6.0.0": {
       "type": "package",
@@ -1345,12 +1357,19 @@
       "path": "system.security.cryptography.pkcs/10.0.7",
       "hashPath": "system.security.cryptography.pkcs.10.0.7.nupkg.sha512"
     },
-    "System.Security.Cryptography.ProtectedData/9.0.4": {
+    "System.Security.Cryptography.ProtectedData/10.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-o94k2RKuAce3GeDMlUvIXlhVa1kWpJw95E6C9LwW0KlG0nj5+SgCiIxJ2Eroqb9sLtG1mEMbFttZIBZ13EJPvQ==",
-      "path": "system.security.cryptography.protecteddata/9.0.4",
-      "hashPath": "system.security.cryptography.protecteddata.9.0.4.nupkg.sha512"
+      "sha512": "sha512-qy6C3gQRTrfhFfuiIYU1jNwWfFdJpBVo1BARW7jgMm1zTEm3LRzLLyOLJGaAuKE+nZCGkEP71y4rj9NWjqLGdQ==",
+      "path": "system.security.cryptography.protecteddata/10.0.0",
+      "hashPath": "system.security.cryptography.protecteddata.10.0.0.nupkg.sha512"
+    },
+    "Z.Dapper.Plus/9.3.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-4aLwYy86JlTFK4QgUC1ctqQjd0U+vdj8vXtlxxEG+4uYg7HMdBEXMN/l9wJb4tHHsBbA1Lx/yqQqlRExgQ/UZw==",
+      "path": "z.dapper.plus/9.3.2",
+      "hashPath": "z.dapper.plus.9.3.2.nupkg.sha512"
     }
   }
 }

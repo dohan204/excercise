@@ -1,6 +1,8 @@
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField, type SelectChangeEvent } from "@mui/material";
 import React, { useState, type SetStateAction } from "react";
 import ProductNewPupup from "./ProductNewPupup";
+import { GetDownloadFile } from "../../services/ProductDataService";
+import ProductUpload from "./ProductUpload";
 type Props = {
     fieldName: string,
     setFieldName: React.Dispatch<SetStateAction<string>>,
@@ -14,14 +16,20 @@ type Props = {
 const fieldFilter = ["productCode", "productName", "unit", "specification", "quantityPerBox", "productWeight"]
 const buttons = [
     { name: "Thêm mới", key: 'new' },
-    { name: 'Tải file Mẫu', key: 'parttern' },
+    { name: 'Tải file Mẫu', key: 'download' },
     { name: 'Uploda dữ liệu', key: 'upload' }
 ] as const;
 
 const ProductHeader = ({ fieldName, setFieldName, keyword, setKeyword, setButton, setCount }: Props) => {
-    const [popup, setPopup] = useState<"new" | "parttern" | "upload" | null>(null);
+    const [popup, setPopup] = useState<"new" | "download" | "upload" | null>(null);
     const handleEvent = (e: SelectChangeEvent) => {
         setFieldName(e.target.value);
+    }
+
+    const handleFetch = async (actionKey: string) => {
+        const {fetchFile} = GetDownloadFile(actionKey)
+
+        await fetchFile();
     }
     return (
 
@@ -54,10 +62,16 @@ const ProductHeader = ({ fieldName, setFieldName, keyword, setKeyword, setButton
                         {buttons.map(item => (
                             <Button key={item.key}
                                 variant="contained"
-                                onClick={() => setPopup(item.key)}
+                                onClick={async () => {
+                                    setPopup(item.key);
+                                    if(item.key === "download") {
+                                        await handleFetch(item.key)
+                                    }
+                                }}
                             >{item.name}</Button>
                         ))}
                         <ProductNewPupup open={popup === 'new'} setOpen={() => setPopup(null)} setCount={setCount} />
+                        <ProductUpload open={popup === 'upload'} setOpen={() => setPopup(null)} setCount={setCount} />
                     </div>
                 </div>
                 <div className="flex flex-1 justify-center items-center">

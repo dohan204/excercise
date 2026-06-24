@@ -40,7 +40,7 @@ const ProductContent = ({ data, setCount }: { data: Props, setCount: React.Dispa
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell align='right'>Số thứ tự</TableCell>
+                        <TableCell align='right'>STT</TableCell>
                         <TableCell align='right'>Action</TableCell>
                         <TableCell align='right'>Mã Sản phẩm</TableCell>
                         <TableCell align='right'>Tên Sản phẩm</TableCell>

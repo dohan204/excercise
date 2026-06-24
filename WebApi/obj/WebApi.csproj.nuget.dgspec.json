@@ -86,6 +86,10 @@
             "QuestPDF": {
               "target": "Package",
               "version": "[2026.6.0, )"
+            },
+            "Z.Dapper.Plus": {
+              "target": "Package",
+              "version": "[9.3.2, )"
             }
           },
           "imports": [

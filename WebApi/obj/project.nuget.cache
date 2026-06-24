@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "I+HiQN+t4TY=",
+  "dgSpecHash": "ZLg7p/7QSX4=",
   "success": true,
   "projectFilePath": "D:\\Excercise\\webapi\\WebApi.csproj",
   "expectedPackageFiles": [
@@ -56,12 +56,13 @@
     "C:\\Users\\ADMIN\\.nuget\\packages\\system.composition.hosting\\9.0.0\\system.composition.hosting.9.0.0.nupkg.sha512",
     "C:\\Users\\ADMIN\\.nuget\\packages\\system.composition.runtime\\9.0.0\\system.composition.runtime.9.0.0.nupkg.sha512",
     "C:\\Users\\ADMIN\\.nuget\\packages\\system.composition.typedparts\\9.0.0\\system.composition.typedparts.9.0.0.nupkg.sha512",
-    "C:\\Users\\ADMIN\\.nuget\\packages\\system.configuration.configurationmanager\\9.0.4\\system.configuration.configurationmanager.9.0.4.nupkg.sha512",
+    "C:\\Users\\ADMIN\\.nuget\\packages\\system.configuration.configurationmanager\\10.0.0\\system.configuration.configurationmanager.10.0.0.nupkg.sha512",
     "C:\\Users\\ADMIN\\.nuget\\packages\\system.drawing.common\\6.0.0\\system.drawing.common.6.0.0.nupkg.sha512",
     "C:\\Users\\ADMIN\\.nuget\\packages\\system.identitymodel.tokens.jwt\\7.7.1\\system.identitymodel.tokens.jwt.7.7.1.nupkg.sha512",
     "C:\\Users\\ADMIN\\.nuget\\packages\\system.memory.data\\8.0.1\\system.memory.data.8.0.1.nupkg.sha512",
     "C:\\Users\\ADMIN\\.nuget\\packages\\system.security.cryptography.pkcs\\10.0.7\\system.security.cryptography.pkcs.10.0.7.nupkg.sha512",
-    "C:\\Users\\ADMIN\\.nuget\\packages\\system.security.cryptography.protecteddata\\9.0.4\\system.security.cryptography.protecteddata.9.0.4.nupkg.sha512"
+    "C:\\Users\\ADMIN\\.nuget\\packages\\system.security.cryptography.protecteddata\\10.0.0\\system.security.cryptography.protecteddata.10.0.0.nupkg.sha512",
+    "C:\\Users\\ADMIN\\.nuget\\packages\\z.dapper.plus\\9.3.2\\z.dapper.plus.9.3.2.nupkg.sha512"
   ],
   "logs": []
 }

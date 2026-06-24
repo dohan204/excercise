@@ -1,6 +1,8 @@
 using WebApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Entities;
+using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace WebApi.Controllers;
 
@@ -9,11 +11,13 @@ namespace WebApi.Controllers;
 [Route("api/[controller]")]
 public class ProductsController : ControllerBase
 {
-    private readonly MasterProductService _productService; 
-    public ProductsController(MasterProductService productService)
+    private readonly IExcelService excelService;
+    private readonly MasterProductService _productService;
+    public ProductsController(MasterProductService productService, IExcelService excelService)
     {
         _productService = productService;
-    } 
+        this.excelService = excelService;
+    }
     [HttpGet]
     public async Task<IActionResult> GetProducts()
     {
@@ -37,9 +41,9 @@ public class ProductsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateProduct([FromRoute] string Id,[FromBody] MasterProduct materProduct)
+    public async Task<IActionResult> UpdateProduct([FromRoute] string Id, [FromBody] MasterProduct materProduct)
     {
-        await _productService.UpdateMasterProductAsync(Guid.Parse(Id),materProduct);
+        await _productService.UpdateMasterProductAsync(Guid.Parse(Id), materProduct);
         return NoContent();
     }
 
@@ -55,5 +59,41 @@ public class ProductsController : ControllerBase
     {
         var products = await _productService.SearchByFieldAsync(fieldName, keyword);
         return Ok(products ?? []);
+    }
+
+
+    [HttpPost("insertmany")]
+    public async Task<IActionResult> Insert(IFormFile file)
+    {
+
+        if (file == null || file.Length == 0)
+        {
+            return BadRequest("Vui lòng chọn file Excel để import");
+        }
+        string[] allowedExtension = [".xlsx"];
+        string fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
+        if (!allowedExtension.Contains(fileExtension))
+        {
+            return BadRequest("Định dạng không hợp lệ");
+        }
+        using (var stream = file.OpenReadStream())
+        {
+            await excelService.HandleFileImport(stream);
+            return StatusCode(StatusCodes.Status201Created, new { message = "insert many thành công" });
+        }
+    }
+
+
+    [HttpGet("patternFile")]
+    public async Task<IActionResult> DownloadPatternFile()
+    {
+        try
+        {
+            var (fileBytes, typeName, fileName) = await excelService.GetContentTypeAsync<MasterProduct>();
+            return File(fileBytes, typeName, fileName);
+        } catch(Exception ex)
+        {
+            throw ex;
+        }
     }
 }
