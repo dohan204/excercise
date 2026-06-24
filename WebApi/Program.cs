@@ -9,8 +9,12 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: "allowreact", policy =>
     {
-      policy.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader() ;
+      policy.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader()
+      .WithExposedHeaders("Content-Disposition") ;
     });
+
+    
+
 });
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -18,6 +22,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddScoped<MasterProductService>();
 builder.Services.AddScoped<IDbSqlConnection, DbSqlConnection>();
+builder.Services.AddScoped<IExcelService, ExcelService>();
 var app = builder.Build();
 app.UseCors("allowreact");
 

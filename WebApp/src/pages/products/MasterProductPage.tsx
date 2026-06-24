@@ -13,7 +13,7 @@ const MasterProductPage = () => {
     const { data, message } = useDataProducts(value, search, button, count);
     console.log(data);
     return (
-        <div className="w-full h-full">
+        <div className="w-full">
             <Paper sx={{padding: 6, margin: 6}}>
                 <ProductHeader
                     fieldName={value}

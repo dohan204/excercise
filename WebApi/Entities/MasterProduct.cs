@@ -10,4 +10,5 @@ public class MasterProduct
     public string? Specification { get; set; }
     public decimal? QuantityPerBox { get; set; }
     public decimal? ProductWeight { get; set; }
+
 }
