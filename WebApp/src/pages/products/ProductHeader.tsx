@@ -1,7 +1,7 @@
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField, type SelectChangeEvent } from "@mui/material";
 import React, { useState, type SetStateAction } from "react";
 import ProductNewPupup from "./ProductNewPupup";
-import { GetDownloadFile } from "../../services/ProductDataService";
+import { FileService } from "../../services/HandleFileService";
 import ProductUpload from "./ProductUpload";
 type Props = {
     fieldName: string,
@@ -27,8 +27,7 @@ const ProductHeader = ({ fieldName, setFieldName, keyword, setKeyword, setButton
     }
 
     const handleFetch = async (actionKey: string) => {
-        const {fetchFile} = GetDownloadFile(actionKey)
-
+        const {fetchFile} = FileService(actionKey)
         await fetchFile();
     }
     return (

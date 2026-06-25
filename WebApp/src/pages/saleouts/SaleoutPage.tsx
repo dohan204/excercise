@@ -26,7 +26,7 @@ const SaleoutPage = () => {
           setKeyword={setSeach}  />
       </div>
       <div className='w-full'>
-        <SaleoutContent data={data} key={count} />
+        <SaleoutContent data={data} setCount={setCount} />
       </div>
     </div>
   )

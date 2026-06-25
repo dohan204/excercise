@@ -78,7 +78,7 @@ public class ProductsController : ControllerBase
         }
         using (var stream = file.OpenReadStream())
         {
-            await excelService.HandleFileImport(stream);
+            await excelService.HandleFileImport(stream, "product");
             return StatusCode(StatusCodes.Status201Created, new { message = "insert many thành công" });
         }
     }

@@ -3,6 +3,7 @@ using Dapper;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Data.SqlClient;
 using WebApi.Database;
+using WebApi.Dtos;
 using WebApi.Entities;
 
 namespace WebApi.Services;
@@ -51,32 +52,40 @@ public class SaleOutService
     }
 
 
-    public async Task<IEnumerable<SaleOut>> GetSaleOutsAsync(string? fieldName, string? keyword)
+    public async Task<IEnumerable<SaleOutDto>> GetSaleOutsAsync(string? fieldName, string? keyword)
     {
         using (var connection = dbSqlConnection.CreateConnection())
         {
             try
             {
-                IEnumerable<SaleOut> saleOuts = null;
+                string sql = "";
+                IEnumerable<SaleOutDto> saleOuts = null;
                 if (keyword != null && fieldName != null)
                 {
-                    string sql = fieldName switch
+                    sql = fieldName switch
                     {
-                        "customerPoNo" => $"Select * from dbo.Saleout where CustomerPoNo like '%{keyword}%'",
-                        "orderDate" => $"Select * from dbo.Saleout where OrderDate like '%{keyword}%'",
-                        "customerName" => $"Select * from dbo.Saleout where CustomerName like '%{keyword}%'",
-                        "quantity" => $"Select * from dbo.Saleout where quantity like '%{keyword}%'",
-                        "price" => $"Select * from dbo.Saleout where Price like '%{keyword}%'",
-                        "quantityPerBox" => $"Select * from dbo.Saleout where QuantityPerBox like '%{keyword}%'",
-                        "boxQuantity" => $"Select * from dbo.Saleout where BoxQuantity like '%{keyword}%'",
+                        "customerPoNo"   => $"Select S.*, m.ProductName, m.Unit from dbo.Saleout S inner join MasterProduct m on S.ProductId = m.Id where S.CustomerPoNo like '%{keyword}%'",
+                        "orderDate"      => $"Select S.*, m.ProductName, m.Unit from dbo.Saleout S inner join MasterProduct m on S.ProductId = m.Id where S.OrderDate like '%{keyword}%'",
+                        "customerName"   => $"Select S.*, m.ProductName, m.Unit from dbo.Saleout S inner join MasterProduct m on S.ProductId = m.Id where S.CustomerName like '%{keyword}%'",
+                        "quantity"       => $"Select S.*, m.ProductName, m.Unit from dbo.Saleout S inner join MasterProduct m on S.ProductId = m.Id where S.Quantity like '%{keyword}%'",
+                        "price"          => $"Select S.*, m.ProductName, m.Unit from dbo.Saleout S inner join MasterProduct m on S.ProductId = m.Id where S.Price like '%{keyword}%'",
+                        "quantityPerBox" => $"Select S.*, m.ProductName, m.Unit from dbo.Saleout S inner join MasterProduct m on S.ProductId = m.Id where S.QuantityPerBox like '%{keyword}%'",
+                        "boxQuantity"    => $"Select S.*, m.ProductName, m.Unit from dbo.Saleout S inner join MasterProduct m on S.ProductId = m.Id where S.BoxQuantity like '%{keyword}%'",
+
                     };
 
-                    saleOuts = await connection.QueryAsync<SaleOut>(sql);
+                    saleOuts = await connection.QueryAsync<SaleOutDto>(sql);
 
                     return saleOuts;
                 }
+                sql = "Select S.*, m.ProductName, m.Unit from dbo.Saleout S inner join MasterProduct m on S.ProductId = m.Id";
+                saleOuts = await connection.QueryAsync<SaleOutDto, MasterProduct, SaleOutDto>(sql, (sale, prd) =>
+                {
+                    sale.ProductName = prd.ProductName!;
+                    sale.Unit = prd.Unit!;
 
-                saleOuts = await connection.QueryAsync<SaleOut>("Select * from dbo.Saleout");
+                    return sale;
+                }, splitOn: "ProductName");
 
                 return saleOuts ?? [];
             }
@@ -95,6 +104,19 @@ public class SaleOutService
         }
     }
 
+    public async Task UpdateSaleoutAsync(Guid Id,SaleOutUpdate update)
+    {
+        using(var connection = dbSqlConnection.CreateConnection())
+        {
+            await connection.ExecuteAsync("spUpdateSaleout", new
+            {
+                Id = Id,
+                QuantityPerBox = update.QuantityPerBox,
+                Quantity = update.Quantity,
+                Price = update.Price,
+            }, commandType: CommandType.StoredProcedure);
+        }
+    }
     public async Task DeleteSaleOutAsync(Guid Id)
     {
         using (var connection = dbSqlConnection.CreateConnection())
@@ -102,6 +124,7 @@ public class SaleOutService
             await connection.ExecuteAsync("Delete from dbo.SaleOut where Id = @Id", new { Id = Id });
         }
     }
+
 
     private async Task<bool> IsProductExists(string Id)
     {
@@ -124,4 +147,11 @@ public class SaleOutService
                     select 0
         ", new {PoNo = customerPono, productId = productid}) > 0;
     }
+}
+
+public class SaleOutUpdate
+{
+    public decimal QuantityPerBox { get; set; }
+    public decimal Quantity { get; set; }
+    public decimal Price { get; set; }
 }
