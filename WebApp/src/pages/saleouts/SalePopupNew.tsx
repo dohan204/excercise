@@ -58,12 +58,11 @@ const SalePopupNew = ({ open, setOpen, setCount }: PopupPropsNew) => {
                 },
                 body: JSON.stringify(payload)
             });
-            
-            const result = await response.json();
-            if (!result.ok) {
-                throw new Error(result.text);
+        
+            if (!response.ok) {
+                throw new Error(`${response.text}`);
             }
-
+            alert("Tạo mới thành công.")
             setOpen(false);
             setCount(c => c + 1);
             reset();

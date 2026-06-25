@@ -51,6 +51,22 @@
           }
         }
       },
+      "Dapper.Contrib/2.0.78": {
+        "type": "package",
+        "dependencies": {
+          "Dapper": "2.0.78"
+        },
+        "compile": {
+          "lib/net5.0/Dapper.Contrib.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net5.0/Dapper.Contrib.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "EPPlus/8.6.1": {
         "type": "package",
         "dependencies": {
@@ -77,6 +93,19 @@
         },
         "runtime": {
           "lib/net10.0/EPPlus.Interfaces.dll": {}
+        }
+      },
+      "FluentValidation/12.1.1": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/FluentValidation.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/FluentValidation.dll": {
+            "related": ".xml"
+          }
         }
       },
       "Humanizer.Core/2.14.1": {
@@ -1366,6 +1395,23 @@
         "readme.md"
       ]
     },
+    "Dapper.Contrib/2.0.78": {
+      "sha512": "sUfDVIf8LlHNiz3MfUFodeyRiemfN1JFkPxYjCxFWlwNPg1iQ49mB+0E89TkywWs4X8fiRWOVDQgtH5FtzK5Kw==",
+      "type": "package",
+      "path": "dapper.contrib/2.0.78",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "dapper.contrib.2.0.78.nupkg.sha512",
+        "dapper.contrib.nuspec",
+        "lib/net461/Dapper.Contrib.dll",
+        "lib/net461/Dapper.Contrib.xml",
+        "lib/net5.0/Dapper.Contrib.dll",
+        "lib/net5.0/Dapper.Contrib.xml",
+        "lib/netstandard2.0/Dapper.Contrib.dll",
+        "lib/netstandard2.0/Dapper.Contrib.xml"
+      ]
+    },
     "EPPlus/8.6.1": {
       "sha512": "ialCJVbku7pQ6Cf2qcdgVkynEkpdkx+6ryGpAu2n3Jlra//HY+0Fp54OM7ELRCE71id5qk55q3SMZgPGW1Pbbw==",
       "type": "package",
@@ -1414,6 +1460,21 @@
         "lib/netstandard2.1/EPPlus.Interfaces.dll",
         "license.md",
         "readme.md"
+      ]
+    },
+    "FluentValidation/12.1.1": {
+      "sha512": "EPpkIe1yh1a0OXyC100oOA8WMbZvqUu5plwhvYcb7oSELfyUZzfxV48BLhvs3kKo4NwG7MGLNgy1RJiYtT8Dpw==",
+      "type": "package",
+      "path": "fluentvalidation/12.1.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "fluent-validation-icon.png",
+        "fluentvalidation.12.1.1.nupkg.sha512",
+        "fluentvalidation.nuspec",
+        "lib/net8.0/FluentValidation.dll",
+        "lib/net8.0/FluentValidation.xml"
       ]
     },
     "Humanizer.Core/2.14.1": {
@@ -3772,7 +3833,9 @@
   "projectFileDependencyGroups": {
     "net10.0": [
       "Dapper >= 2.1.79",
+      "Dapper.Contrib >= 2.0.78",
       "EPPlus >= 8.6.1",
+      "FluentValidation >= 12.1.1",
       "Microsoft.AspNetCore.OpenApi >= 10.0.1",
       "Microsoft.EntityFrameworkCore.Design >= 10.0.9",
       "Microsoft.EntityFrameworkCore.SqlServer >= 10.0.9",
@@ -3789,11 +3852,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Excercise\\WebApi\\WebApi.csproj",
+      "projectUniqueName": "D:\\Excercise\\webapi\\WebApi.csproj",
       "projectName": "WebApi",
-      "projectPath": "D:\\Excercise\\WebApi\\WebApi.csproj",
+      "projectPath": "D:\\Excercise\\webapi\\WebApi.csproj",
       "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-      "outputPath": "D:\\Excercise\\WebApi\\obj\\",
+      "outputPath": "D:\\Excercise\\webapi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -3837,9 +3900,17 @@
             "target": "Package",
             "version": "[2.1.79, )"
           },
+          "Dapper.Contrib": {
+            "target": "Package",
+            "version": "[2.0.78, )"
+          },
           "EPPlus": {
             "target": "Package",
             "version": "[8.6.1, )"
+          },
+          "FluentValidation": {
+            "target": "Package",
+            "version": "[12.1.1, )"
           },
           "Microsoft.AspNetCore.OpenApi": {
             "target": "Package",

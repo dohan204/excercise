@@ -1,7 +1,8 @@
 import { Button, FormControl, InputLabel, MenuItem, Paper, Select, TextField, type SelectChangeEvent } from "@mui/material";
 import React, { useState, type SetStateAction } from "react";
-import { GetDownloadFile } from "../../services/ProductDataService";
+import { FileService } from "../../services/HandleFileService";
 import SalePopupNew from "./SalePopupNew";
+import SaleUploadPopup from "./SaleUploadPopup";
 type Props = {
     fieldName: string,
     setFieldName: React.Dispatch<SetStateAction<string>>,
@@ -15,7 +16,7 @@ type Props = {
 const fieldFilter = ["customerPoNo", "OrderDate", "customerName", "quantity", "price", "quantityPerBox", "boxQuantity"]
 const buttons = [
     { name: "Thêm mới", key: 'new' },
-    { name: 'Tải file Mẫu', key: 'download' },
+    { name: 'Tải file Mẫu', key: 'sale-download' },
     { name: 'Uploda dữ liệu', key: 'upload' }
 ] as const;
 
@@ -25,14 +26,13 @@ const buttonRight = [
 ]
 
 const SaleoutHeader = ({ fieldName, setFieldName, keyword, setKeyword, setButton, setCount }: Props) => {
-    const [popup, setPopup] = useState<"new" | "download" | "upload" | null>(null);
+    const [popup, setPopup] = useState<"new" | "sale-download" | "upload" | null>(null);
     const handleEvent = (e: SelectChangeEvent) => {
         setFieldName(e.target.value);
     }
 
     const handleFetch = async (actionKey: string) => {
-        const { fetchFile } = GetDownloadFile(actionKey)
-
+        const { fetchFile } = FileService(actionKey)
         await fetchFile();
     }
     return (
@@ -68,7 +68,7 @@ const SaleoutHeader = ({ fieldName, setFieldName, keyword, setKeyword, setButton
                                 variant="contained"
                                 onClick={async () => {
                                     setPopup(item.key);
-                                    if (item.key === "download") {
+                                    if (item.key === "sale-download") {
                                         await handleFetch(item.key)
                                     }
                                 }}
@@ -96,7 +96,7 @@ const SaleoutHeader = ({ fieldName, setFieldName, keyword, setKeyword, setButton
                     </div>
                 </div>
 
-
+                <SaleUploadPopup open={popup === "upload"} setOpen={() => setPopup(null)} setCount={setCount}/>
                 <SalePopupNew setCount={setCount} open={popup === 'new'} setOpen={() => setPopup(null)} />
             </div>
         </Paper>

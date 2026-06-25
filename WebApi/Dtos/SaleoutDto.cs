@@ -1,11 +1,11 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Dapper.Contrib;
 using Dapper.Contrib.Extensions;
-namespace WebApi.Entities;
+namespace WebApi.Dtos;
 
-public partial class SaleOut
+public partial class SaleOutDto
 {
-    public Guid Id {get; set;}
+    public Guid? Id {get; set;}
     public string CustomerPoNo {get; set;}
     public int OrderDate {get; set;}
     public string CustomerName { get; set; }
@@ -16,4 +16,6 @@ public partial class SaleOut
     public decimal QuantityPerBox { get; set; }
     public decimal? BoxQuantity { get; set; }
 
+    public string ProductName {get; set;}
+    public string Unit {get; set;}
 }

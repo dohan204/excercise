@@ -8,5 +8,7 @@ export interface Saleout {
     price: number,
     amount: number,
     quantityPerBox: number,
-    boxQuantity: number
+    boxQuantity: number,
+    productName: string,
+    unit: string
 }
