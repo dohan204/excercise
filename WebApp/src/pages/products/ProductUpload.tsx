@@ -8,8 +8,6 @@ interface PropsUpload {
     setCount: React.Dispatch<SetStateAction<number>>;
 }
 
-
-
 const ProductUpload = ({ open, setOpen, setCount }: PropsUpload) => {
     const handleUpload = () => {
         const fileInput = document.querySelector("#fileUploadInsert") as HTMLInputElement;
