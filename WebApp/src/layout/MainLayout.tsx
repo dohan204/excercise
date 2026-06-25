@@ -29,7 +29,7 @@ const MainLayout = () => {
           </ul>
         </nav>
 
-        <main className='flex-1 p-20'>
+        <main className='flex-1 p-10'>
             <Outlet />
         </main>
     </div>

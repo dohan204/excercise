@@ -21,13 +21,15 @@ builder.Services.AddCors(options =>
 builder.Services.AddOpenApi();
 
 builder.Services.AddScoped<MasterProductService>();
+builder.Services.AddScoped<SaleOutService>();
 builder.Services.AddScoped<IDbSqlConnection, DbSqlConnection>();
 builder.Services.AddScoped<IExcelService, ExcelService>();
 var app = builder.Build();
 app.UseCors("allowreact");
 
 app.Use( async (context, next) =>
-{
+{   
+    Console.WriteLine(context.Request.QueryString);
     Console.WriteLine(context.Request.Method);
     Console.WriteLine(context.Request.Path);
 

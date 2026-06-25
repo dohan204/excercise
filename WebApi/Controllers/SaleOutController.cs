@@ -14,9 +14,9 @@ public class SaleOutController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetSaleOut()
+    public async Task<IActionResult> GetSaleOut([FromQuery] string? fieldName, [FromQuery] string? keyword)
     {
-        var results = await saleOutService.GetSaleOutsAsync();
+        var results = await saleOutService.GetSaleOutsAsync(fieldName, keyword);
         return Ok(results);
     }
 
