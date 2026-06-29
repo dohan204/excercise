@@ -5,6 +5,7 @@ import Homepage from './layout/Homepage'
 import MasterProductPage from './pages/products/MasterProductPage'
 import SaleoutPage from './pages/saleouts/SaleoutPage'
 import { ProductProvider } from './context/ProductContext'
+import { SaleoutContextProvicer } from './context/SaleoutContext'
 
 const router = createBrowserRouter([
   {
@@ -20,8 +21,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <ProductProvider>
-
-      <RouterProvider router={router} />
+      <SaleoutContextProvicer>
+        <RouterProvider router={router} />
+      </SaleoutContextProvicer>
     </ProductProvider>
   )
 }

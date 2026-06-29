@@ -9,10 +9,12 @@ public class SaleOutController : ControllerBase
 {
     private readonly SaleOutService saleOutService;
     private readonly IExcelService excelService;
-    public SaleOutController(SaleOutService saleOutService, IExcelService excelService)
+    private readonly IPdfService pdfService;
+    public SaleOutController(SaleOutService saleOutService, IExcelService excelService, IPdfService pdfService)
     {
         this.saleOutService = saleOutService;
         this.excelService = excelService;
+        this.pdfService = pdfService;
     }
 
     [HttpGet]
@@ -93,5 +95,20 @@ public class SaleOutController : ControllerBase
         {
             throw ex;
         }
+    }
+
+    [HttpGet("print/{Id}")]
+    public async Task<IActionResult> GetPrint([FromRoute] string Id)
+    {
+        var (fileBytes, typeName, fileName) = await pdfService.GetDataPrint(Guid.Parse(Id));
+
+        return File(fileBytes, typeName, fileName);
+    }
+
+    [HttpGet("revenue")]
+    public async Task<IActionResult> GetRevenue([FromQuery] int fromDate, [FromQuery] int toDate)
+    {
+        var (fileBytes, typeName, fileName) = await this.excelService.GetRevenueAsync(fromDate, toDate);
+        return File(fileBytes, typeName, fileName);
     }
 }

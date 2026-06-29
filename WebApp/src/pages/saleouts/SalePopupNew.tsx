@@ -7,6 +7,8 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { useForm } from 'react-hook-form'
 import { BASE_URL } from '../../configs/configUrlBase'
+import useConvertDateToNumber from '../../hooks/useConvertDateToNumber'
+import type { ErrorModel } from '../../services/ProductDataService'
 
 interface PopupPropsNew {
     open: boolean,
@@ -23,7 +25,7 @@ interface FormValues {
 
 const SalePopupNew = ({ open, setOpen, setCount }: PopupPropsNew) => {
     const { data } = useProductContext();
-    const { register, handleSubmit, reset, setValue } = useForm<FormValues>();
+    const { register, handleSubmit, reset } = useForm<FormValues>();
     const [selectedProductId, setSelectedProductId] = useState<string>('');
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
@@ -33,9 +35,6 @@ const SalePopupNew = ({ open, setOpen, setCount }: PopupPropsNew) => {
 
     const currentProduct = products.get(selectedProductId);
 
-    const year = selectedDate?.getFullYear();
-    const month = selectedDate ? String(selectedDate.getMonth() + 1).padStart(2, '0') : '';
-    const day = selectedDate ? String(selectedDate.getDate()).padStart(2, '0') : '';
 
     const onSubmit = async (formData: FormValues) => {
         if (!selectedProductId || !selectedDate) {
@@ -46,7 +45,7 @@ const SalePopupNew = ({ open, setOpen, setCount }: PopupPropsNew) => {
         const payload = { 
             ...formData, 
             productId: selectedProductId, 
-            orderDate: Number(`${year}${month}${day}`),
+            orderDate: useConvertDateToNumber(selectedDate),
             quantityPerBox: currentProduct?.quantityPerBox || 0 
         };
 
@@ -60,7 +59,11 @@ const SalePopupNew = ({ open, setOpen, setCount }: PopupPropsNew) => {
             });
         
             if (!response.ok) {
-                throw new Error(`${response.text}`);
+                const error: ErrorModel = await response.json();
+                if(error.status === 409) {
+                    alert(`So PO Khách hàng: ${payload.customerPoNo} và Sản phẩm ${payload.productId} đã tồn tại trên hệ thống`)
+                    return;
+                }
             }
             alert("Tạo mới thành công.")
             setOpen(false);

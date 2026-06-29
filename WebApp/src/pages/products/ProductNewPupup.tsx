@@ -22,29 +22,30 @@ export interface NewProps {
 
 const ProductNewPupup = (props: NewProps) => {
     const { open, setOpen, setCount } = props;
-    const { register, handleSubmit, reset, formState: { errors } } = useForm<Inputs>();
-    const {loading, submit, messageErr} = useSubmitFormData();
-
+    const { register, handleSubmit, reset } = useForm<Inputs>();
+    const { loading, submit, messageErr } = useSubmitFormData();
     const onSubmit: SubmitHandler<Inputs> = async (payload) => {
-        try {
-        await submit(payload);
+        const result = await submit(payload);
+
+        if (result?.error) {
+            if (result.error.status === 409 || result.error.title === 'Conflict') {
+                alert(`Mã sản phẩm ${payload.productCode} đã tồn tại`);
+            }
+            return;
+        }
         setOpen(false);
         setCount(c => c + 1);
-        reset()
-    } catch(err) {
-        console.log(err);
-        
-    }
-    }
+        reset();
+    };
     return (
         <React.Fragment>
             <Dialog open={open} onClose={() => setOpen(false)}>
-                {messageErr && <span className='text-red-600 text-center'>{messageErr}</span>}
+                {messageErr && <span className='text-red-600 text-center'>{ }</span>}
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <DialogContent>
                         <div
                             className='flex justify-around items-center gap-4'>
-                            <div 
+                            <div
                                 className='flex flex-col gap-6'>
                                 <div
                                     className='flex flex-col'>
@@ -55,7 +56,7 @@ const ProductNewPupup = (props: NewProps) => {
                                         type='text'
                                         {...register("productCode", { required: true, maxLength: 50 })}
                                         placeholder='Nhập mã sản phẩm'
-                                         className='border-1 rounded-md border-gray-200 p-2'
+                                        className='border-1 rounded-md border-gray-200 p-2'
                                     />
                                 </div>
                                 <div className='flex flex-col'>
@@ -66,7 +67,7 @@ const ProductNewPupup = (props: NewProps) => {
                                         type='text'
                                         {...register("unit", { required: true, maxLength: 50 })}
                                         placeholder='Nhập mã sản phẩm'
-                                         className='border-1 rounded-md border-gray-200 p-2'
+                                        className='border-1 rounded-md border-gray-200 p-2'
                                     />
                                 </div>
                                 <div className='flex flex-col'>
@@ -77,7 +78,7 @@ const ProductNewPupup = (props: NewProps) => {
                                         type='number'
                                         {...register("quantityPerBox", { required: true, valueAsNumber: true })}
                                         placeholder='Nhập mã sản phẩm'
-                                         className='border-1 rounded-md border-gray-200 p-2'
+                                        className='border-1 rounded-md border-gray-200 p-2'
                                     />
                                 </div>
                             </div>
@@ -101,7 +102,7 @@ const ProductNewPupup = (props: NewProps) => {
                                         type='text'
                                         {...register("specification", { required: true, maxLength: 200 })}
                                         placeholder='Nhập mã sản phẩm'
-                                         className='border-1 rounded-md border-gray-200 p-2'
+                                        className='border-1 rounded-md border-gray-200 p-2'
                                     />
                                 </div>
                                 <div className='flex flex-col'>
@@ -112,7 +113,7 @@ const ProductNewPupup = (props: NewProps) => {
                                         type='number'
                                         {...register("productWeight", { required: true, valueAsNumber: true })}
                                         placeholder='Nhập mã sản phẩm'
-                                         className='border-1 rounded-md border-gray-200 p-2'
+                                        className='border-1 rounded-md border-gray-200 p-2'
                                     />
                                 </div>
                             </div>
@@ -122,11 +123,11 @@ const ProductNewPupup = (props: NewProps) => {
                         <Button onClick={() => setOpen(false)}>
                             Hủy
                         </Button>
-                        <Button 
-                            type='submit' 
+                        <Button
+                            type='submit'
                             variant='contained'
                             disabled={loading}
-                            >
+                        >
                             Lưu
                         </Button>
                     </DialogActions>

@@ -28,7 +28,7 @@ const ProductHeader = ({ fieldName, setFieldName, keyword, setKeyword, setButton
 
     const handleFetch = async (actionKey: string) => {
         const {fetchFile} = FileService(actionKey)
-        await fetchFile();
+        await fetchFile("xlsx", "TemplateFile");
     }
     return (
 
