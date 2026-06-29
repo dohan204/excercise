@@ -24,45 +24,47 @@ const useDataProducts = (fieldName?: string, keyword?: string, buttonClick?: num
 
 }
 
+export interface ErrorModel {
+    title: string,
+    status: number,
+    detail: string
+}
 
 
 export const useSubmitFormData = () => {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
-    const [messageErr, setMessageErr] = useState('');
+    const [messageErr, setMessageErr] = useState<ErrorModel>({
+        title: '',
+        status: 0,
+        detail: ''
+    });
     console.log(message)
     console.log(messageErr);
     const submit = async (data: any) => {
         setLoading(true);
-
         try {
             const response = await fetch(`${BASE_URL}/products`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             });
 
             if (!response.ok) {
-                if (response.status === 500) {
-                    setMessageErr("Sản phẩm đã tồn tại");
-                }
-                return;
+                const errorResult = await response.json();
+                setMessageErr(errorResult);
+                return { error: errorResult }; 
             }
 
             const result = await response.json();
-
             setMessage(result.message ?? 'Success');
+            return { error: null, data: result }; 
 
-            return result;
-        }
-        catch (error) {
-            if (error instanceof Error) {
-                setMessageErr(error.name);
-            }
-        }
-        finally {
+        } catch (error) {
+            const err = { title: 'Network Error', status: 500, detail: "network error" };
+            setMessageErr(err);
+            return { error: err }; // ← catch cũng phải return
+        } finally {
             setLoading(false);
         }
     };

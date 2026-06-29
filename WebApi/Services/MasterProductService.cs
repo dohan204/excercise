@@ -6,6 +6,7 @@ using Microsoft.Identity.Client;
 using OfficeOpenXml;
 using WebApi.Database;
 using WebApi.Entities;
+using WebApi.Exceptions;
 using Z.Dapper.Plus;
 
 namespace WebApi.Services;
@@ -43,13 +44,9 @@ public class MasterProductService
     {
         using (var connection = sqlConnection.CreateConnection())
         {
-            if (!InputValidate(masterProduct))
-            {
-                throw new ArgumentNullException("Input khong được để trống");
-            }
             if (await ProductExits(masterProduct.ProductCode))
             {
-                throw new InvalidOperationException("Sản phẩm đã tồn tại");
+                throw new ConflictException("Sản phẩm đã tồn tại");
             }
 
             await

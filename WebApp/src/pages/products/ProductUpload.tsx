@@ -9,7 +9,7 @@ interface PropsUpload {
 }
 
 const ProductUpload = ({ open, setOpen, setCount }: PropsUpload) => {
-    const handleUpload = () => {
+    const handleUpload = async () => {
         const fileInput = document.querySelector("#fileUploadInsert") as HTMLInputElement;
         const file = fileInput?.files[0];
 
@@ -19,15 +19,24 @@ const ProductUpload = ({ open, setOpen, setCount }: PropsUpload) => {
         }
         const form = new FormData();
         form.append('file', file);
+        try {
+            const response = await fetch(`${BASE_URL}/products/insertmany`, {
+                method: 'POST',
+                body: form
+            });
 
-        fetch(`${BASE_URL}/products/insertmany`, {
-            method: 'POST',
-            body: form
-        }).then(response => response.json())
-            .then(() => alert("Upload dữ liệu thành Công."))
-            .then(() => setOpen(false))
-            .then(() => setCount(c => c + 1))
-            .catch(err => console.error(err));
+            if(!response.ok) {
+                const errors = await response.json();
+                alert(`${errors.detail}`)
+            }
+
+            setOpen(false);
+            setCount(c => c + 1);
+            return {errors: null}
+        } catch (error) {
+            console.error(error);
+            return {errors: error}
+        }
     }
     return (
         <div>
@@ -41,14 +50,22 @@ const ProductUpload = ({ open, setOpen, setCount }: PropsUpload) => {
                 <form>
                     <DialogContent>
                         <input
-                            id='fileUploadInsert'
-                            className='border-1 p-0.5 rounded-sm'
-                            type='file'
-                             multiple />
+                        id="fileUploadInsert"
+                            type="file"
+                            className="block w-full text-sm text-gray-500
+                            file:mr-4
+                            file:py-2
+                            file:px-4
+                            file:rounded-md
+                            file:border-0
+                            file:bg-blue-50
+                            file:text-blue-700
+                            hover:file:bg-blue-100"
+                        />
                     </DialogContent>
                     <DialogActions>
                         <Button variant='outlined' onClick={() => setOpen(false)}>Hủy</Button>
-                        <Button 
+                        <Button
                             variant='contained'
                             onClick={handleUpload}
                         >Tải lên

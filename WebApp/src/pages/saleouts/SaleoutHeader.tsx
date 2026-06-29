@@ -3,6 +3,8 @@ import React, { useState, type SetStateAction } from "react";
 import { FileService } from "../../services/HandleFileService";
 import SalePopupNew from "./SalePopupNew";
 import SaleUploadPopup from "./SaleUploadPopup";
+import SaleoutPrint from "./SaleoutPrint";
+import SaleoutRevenueReport from "./SaleoutRevenueReport";
 type Props = {
     fieldName: string,
     setFieldName: React.Dispatch<SetStateAction<string>>,
@@ -20,20 +22,24 @@ const buttons = [
     { name: 'Uploda dữ liệu', key: 'upload' }
 ] as const;
 
-const buttonRight = [
-    {name: "In phiếu", key: "print"},
-    {name: "Báo cáo doanh thu", key: 'report'}
-]
-
+type typeButtonKey = "new" | "sale-download" | "upload" | "print" | "revenue"
+type buttonRight = {
+    name: string,
+    key: typeButtonKey
+} 
 const SaleoutHeader = ({ fieldName, setFieldName, keyword, setKeyword, setButton, setCount }: Props) => {
-    const [popup, setPopup] = useState<"new" | "sale-download" | "upload" | null>(null);
+    const [popup, setPopup] = useState<typeButtonKey | null>(null);
     const handleEvent = (e: SelectChangeEvent) => {
         setFieldName(e.target.value);
     }
+    const btnRight: buttonRight[] = [
+        {name: "In phiếu", key: "print"},
+        {name: "Báo cáo doanh thu", key: 'revenue'}
+    ]
 
     const handleFetch = async (actionKey: string) => {
         const { fetchFile } = FileService(actionKey)
-        await fetchFile();
+        await fetchFile("xlsx", "TemplateFile");
     }
     return (
         <Paper>
@@ -88,8 +94,9 @@ const SaleoutHeader = ({ fieldName, setFieldName, keyword, setKeyword, setButton
                         </Button>
                     </div>
                     <div className="flex flex-1 w-full justify-around items-center">
-                        {buttonRight.map(btn => (
-                            <Button key={btn.key} variant="contained">
+                        {btnRight.map(btn => (
+                            <Button key={btn.key} variant="contained"
+                                onClick={() => setPopup(btn.key)}>
                                 {btn.name}
                             </Button>
                         ))}
@@ -98,6 +105,8 @@ const SaleoutHeader = ({ fieldName, setFieldName, keyword, setKeyword, setButton
 
                 <SaleUploadPopup open={popup === "upload"} setOpen={() => setPopup(null)} setCount={setCount}/>
                 <SalePopupNew setCount={setCount} open={popup === 'new'} setOpen={() => setPopup(null)} />
+                <SaleoutPrint open={popup === 'print'} setOpen={() => setPopup(null)} />
+                <SaleoutRevenueReport open={popup === 'revenue'} setOpen={() => setPopup(null)} />
             </div>
         </Paper>
     )

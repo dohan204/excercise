@@ -5,6 +5,7 @@ using Microsoft.Data.SqlClient;
 using WebApi.Database;
 using WebApi.Dtos;
 using WebApi.Entities;
+using WebApi.Exceptions;
 
 namespace WebApi.Services;
 
@@ -12,6 +13,7 @@ namespace WebApi.Services;
 public class SaleOutService
 {
     private readonly IDbSqlConnection dbSqlConnection;
+
     public SaleOutService(IDbSqlConnection dbSqlConnection)
     {
         this.dbSqlConnection = dbSqlConnection;
@@ -25,12 +27,12 @@ public class SaleOutService
 
             if (!await IsProductExists(saleOut.ProductId.ToString()))
             {
-                throw new ArgumentException("Sản phẩm không tồn tại");
+                throw new NotFoundException("Sản phẩm không tồn tại");
             }
 
             if(await ExistsCustomerPoNoAndProductIdAsync(saleOut.CustomerPoNo, saleOut.ProductId.ToString(), connection))
             {
-                throw new ArgumentException("Mã khách và mã sản phẩm đã tồn tại");
+                throw new ConflictException("Mã khách và mã sản phẩm đã Có trên hệ thống");
             }
             decimal amount = saleOut.Quantity * saleOut.Price;
             decimal boxQuantity = (saleOut.QuantityPerBox > 0)
@@ -96,11 +98,13 @@ public class SaleOutService
         }
     }
 
-    public async Task<SaleOut?> GetSaleOutByIdAsync(Guid id)
+    public async Task<SaleOutDto?> GetSaleOutByIdAsync(Guid id)
     {
         using (var connection = dbSqlConnection.CreateConnection())
         {
-            return await connection.QuerySingleOrDefaultAsync<SaleOut>("select * from dbo.SaleOut where Id = @Id", new { Id = id });
+            return await connection.QuerySingleOrDefaultAsync<SaleOutDto>(@"select s.*, m.ProductName, m.Unit from dbo.SaleOut s 
+                            inner join dbo.MasterProduct m 
+                        on s.ProductId = m.Id where s.Id = @Id", new { Id = id });
         }
     }
 
@@ -126,6 +130,16 @@ public class SaleOutService
     }
 
 
+    public async Task<IEnumerable<SaleoutRevenueDto>> GetSaleoutRevenueAsync(int fromDate, int toDate)
+    {
+        using(var connection = dbSqlConnection.CreateConnection())
+        {
+            string sql = "select * from dbo.fnSaleOutReport(@FromDate, @ToDate)";
+            return await connection
+                .QueryAsync<SaleoutRevenueDto>
+                    (sql, new { FromDate = fromDate, ToDate = toDate }, commandType: CommandType.Text);
+        }
+    }
     private async Task<bool> IsProductExists(string Id)
     {
         using (var connection = dbSqlConnection.CreateConnection())

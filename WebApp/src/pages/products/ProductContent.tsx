@@ -51,7 +51,7 @@ const ProductContent = ({ data, setCount }: { data: Props, setCount: React.Dispa
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data?.map((row, i) => {
+                    {data.length > 0 ? data?.map((row, i) => {
                         return <TableRow key={row.id}>
                             <TableCell component="th" scope="row">
                                 {i + 1}
@@ -133,7 +133,12 @@ const ProductContent = ({ data, setCount }: { data: Props, setCount: React.Dispa
                                     value={editingRow === row.id ? product?.productWeight : row.productWeight} />
                             </TableCell>
                         </TableRow>
-                    })}
+                    }) : (
+                        <TableRow>
+
+                            <TableCell>Không có sản phẩm nào cả</TableCell>
+                        </TableRow>
+                   )}
                 </TableBody>
                 <ProductDeletePopup 
                     open={openPopup} 

@@ -1,19 +1,26 @@
+using OfficeOpenXml;
+using QuestPDF.Infrastructure;
 using WebApi.Database;
+using WebApi.Middleware;
 using WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+ExcelPackage.License.SetNonCommercialPersonal("dohan");
 
+QuestPDF.Settings.License = LicenseType.Community;
 
+builder.Services.AddExceptionHandler<GlobalHandlerException>();
+builder.Services.AddProblemDetails();
 builder.Services.AddControllers();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: "allowreact", policy =>
     {
-      policy.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader()
-      .WithExposedHeaders("Content-Disposition") ;
+        policy.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader()
+        .WithExposedHeaders("Content-Disposition");
     });
 
-    
+
 
 });
 // Add services to the container.
@@ -24,11 +31,15 @@ builder.Services.AddScoped<MasterProductService>();
 builder.Services.AddScoped<SaleOutService>();
 builder.Services.AddScoped<IDbSqlConnection, DbSqlConnection>();
 builder.Services.AddScoped<IExcelService, ExcelService>();
+builder.Services.AddScoped<IPdfService, PdfService>();
 var app = builder.Build();
+
+
+app.UseExceptionHandler();
 app.UseCors("allowreact");
 
-app.Use( async (context, next) =>
-{   
+app.Use(async (context, next) =>
+{
     Console.WriteLine(context.Request.QueryString);
     Console.WriteLine(context.Request.Method);
     Console.WriteLine(context.Request.Path);
@@ -51,7 +62,7 @@ var summaries = new[]
 
 app.MapGet("/weatherforecast", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
+    var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
